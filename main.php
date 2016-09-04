@@ -6,85 +6,170 @@
  * Time: 7:45 PM
  */
 
-echo 'Welcome to Zendesk Search'."\n".'Type \'quit\' to exit at any time, press \'Enter\' to continue'."\n\n\n\n";
 
-echo "\t".' Select search options:'."\n\t".'  * Press 1 to search Zendesk'."\n\t".'  * Press 2 to view list of searchable fields'."\n\t".'  * Type \'Quit\' to exit'."\n\n";
-
-$handle = fopen ("php://stdin","r");
-$line = fgets($handle);
-$line=str_replace(PHP_EOL, '', $line);
-
-function checkSearchableItems($item){
-    if($item == 'users'){
-        $str = file_get_contents('users.json');
-        $json = json_decode($str, true);
-        $searchableKeys = array_keys($json[0]);
-        return $searchableKeys;
-    }
-    elseif($item == 'organizations'){
-
-    }
-    elseif($item == 'tickets'){
-
-    }
+function checkSearchableItems($file){
+    $str = file_get_contents($file.'.json');
+    $json = json_decode($str, true);
+    $searchableKeys = array_keys($json[0]);
+    return $searchableKeys;
 }
 
 function search($searchItemInput,$searchValue,$objectToSearch){
-        $str = file_get_contents($objectToSearch.'.json');
-        $records = json_decode($str, true);
-        $result = array();
-        foreach($records as $record){
-            if(is_array($record[$searchItemInput])){
-                foreach($record[$searchItemInput] as $subrecord){
-                    if($subrecord == $searchValue){
-                        array_push($result,$record);
-                    }
-                }
-            }
-            else{
-                if($record[$searchItemInput] == $searchValue){
+    $str = file_get_contents($objectToSearch.'.json');
+    $records = json_decode($str, true);
+    $result = array();
+    foreach($records as $record){
+        if(is_array($record[$searchItemInput])){
+            foreach($record[$searchItemInput] as $subrecord){
+                if($subrecord == $searchValue){
                     array_push($result,$record);
                 }
             }
         }
+        else{
+            if($record[$searchItemInput] == $searchValue){
+                array_push($result,$record);
+            }
+        }
+    }
     return $result;
 }
 
-switch($line){
-    case 1:
-        echo 'Select 1) Users 2) Tickets or 3) Organizations'."\n";
-        $userInput = fgets($handle);
-        $userInput=str_replace(PHP_EOL, '', $userInput);
+function menuInput($input){
+
+    switch($input){
+        case 1:
+        case '':
+            echo 'Select 1) Users 2) Tickets or 3) Organizations'."\n";
+            $userInput = commandLineInputHnadler();
         switch($userInput){
             case 1:
                 echo 'Enter the search item'."\n";
-                $searchItemInput = fgets($handle);
-                $searchItemInput=str_replace(PHP_EOL, '', $searchItemInput);
+                $searchItemInputInput = commandLineInputHnadler();
                 checkSearchableItems('users');
-                if(in_array($searchItemInput,checkSearchableItems('users'))){
+                if(in_array($searchItemInputInput,checkSearchableItems('users'))){
                     echo 'Enter the search value'."\n";
-                    $searchValue = fgets($handle);
-                    $searchValue=str_replace(PHP_EOL, '', $searchValue);
-                    $result=search($searchItemInput,$searchValue,'users');
+                    $searchValue = commandLineInputHnadler();
+                    $result=search($searchItemInputInput,$searchValue,'users');
                     if(count($result)>0){
-                        print_r($result);
+                        echo 'Found '.count($result). 'records matching the search criteria'."\n";
+                        print_r($result);echo "\n";
+                        echo 'Press return to get back to the previous menu'."\n".'Press \'b\' to get back to main menu'."\n".'Type \'Quit\' to exit'."\n";
+                        menuInput(commandLineInputHnadler());
                     }
                     else{
-                        echo 'No results found';
+                        echo 'No records were found matching the search criteria'."\n";
+                        echo 'Press return to get back to the previous menu'."\n".'Press \'b\' to get back to main menu'."\n".'Type \'Quit\' to exit'."\n";
+                        menuInput(commandLineInputHnadler());
                     }
                 }
                 else{
-                    echo 'Search item not present';
+                    echo 'Search item not present'."\n";
+                    echo 'Press return to get back to the previous menu'."\n".'Press \'b\' to get back to main menu'."\n".'Type \'Quit\' to exit'."\n";
+                    menuInput(commandLineInputHnadler());
                 }
+                break;
+            case 2:
+                echo 'Enter the search item'."\n";
+                $searchItemInputInput = commandLineInputHnadler();
+                if(in_array($searchItemInputInput,checkSearchableItems('tickets'))){
+                    echo 'Enter the search value'."\n";
+                    $searchValue = commandLineInputHnadler();
+                    $result=search($searchItemInputInput,$searchValue,'tickets');
+                    if(count($result)>0){
+                        echo 'Found '.count($result). 'records matching the search criteria'."\n";
+                        print_r($result);echo "\n";
+                        echo 'Press return to get back to the previous menu'."\n".'Press \'b\' to get back to main menu'."\n".'Type \'Quit\' to exit'."\n";
+                        menuInput(commandLineInputHnadler());
+                    }
+                    else{
+                        echo 'No records were found matching the search criteria'."\n";
+                        echo 'Press return to get back to the previous menu'."\n".'Press \'b\' to get back to main menu'."\n".'Type \'Quit\' to exit'."\n";
+                        menuInput(commandLineInputHnadler());
+                    }
+                }
+                else{
+                    echo 'Search item not present'."\n";
+                    echo 'Press return to get back to the previous menu'."\n".'Press \'b\' to get back to main menu'."\n".'Type \'Quit\' to exit'."\n";
+                    menuInput(commandLineInputHnadler());
+                }
+                break;
+            case 3:
+                echo 'Enter the search item'."\n";
+                $searchItemInputInput = commandLineInputHnadler();
+                if(in_array($searchItemInputInput,checkSearchableItems('organizations'))){
+                    echo 'Enter the search value'."\n";
+                    $searchValue = commandLineInputHnadler();
+                    $result=search($searchItemInputInput,$searchValue,'organizations');
+                    if(count($result)>0){
+                        echo 'Found '.count($result). 'records matching the search criteria'."\n";
+                        print_r($result);echo "\n";
+                        echo 'Press return to get back to the previous menu'."\n".'Press \'b\' to get back to main menu'."\n".'Type \'Quit\' to exit'."\n";
+                        menuInput(commandLineInputHnadler());
+                    }
+                    else{
+                        echo 'No records were found matching the search criteria'."\n";
+                        echo 'Press return to get back to the previous menu'."\n".'Press \'b\' to get back to main menu'."\n".'Type \'Quit\' to exit'."\n";
+                        menuInput(commandLineInputHnadler());
+                    }
+                }
+                else{
+                    echo 'Search item not present'."\n";
+                    echo 'Press return to get back to the previous menu'."\n".'Press \'b\' to get back to main menu'."\n".'Type \'Quit\' to exit'."\n";
+                    menuInput(commandLineInputHnadler());
+                }
+                break;
 
+            default: echo 'Incorrect input! Try again'."\n";
+                    menuInput('');
+                    break;
         }
+            break;
+        case 'b':
+            echo 'Welcome to Zendesk Search'."\n".'Type \'quit\' to exit at any time, press \'Enter\' to continue'."\n\n\n\n";
+            echo "\t".' Select search options:'."\n\t".'  * Press 1 to search Zendesk'."\n\t".'  * Press 2 to view list of searchable fields'."\n\t".'  * Type \'Quit\' to exit'."\n\n";
+            menuInput(commandLineInputHnadler());
+            break;
+        case 2:
+            $userFields  = checkSearchableItems('users');
+            $ticketsFields =checkSearchableItems('tickets');
+            $organizationsFields = checkSearchableItems('organizations');
+            displayFields($userFields,'users');
+            displayFields($ticketsFields,'tickets');
+            displayFields($organizationsFields,'organizations');
+            echo 'Press \'b\' to get back to main menu'."\n".'Type \'Quit\' to exit'."\n";
+            menuInput(commandLineInputHnadler());
+            break;
+        case (strtolower($input)=='quit'):
+            break;
+        default: echo 'nothing';
         break;
-    case 2:
-        echo 'Its 2';
-        break;
-    case (strtolower($line)=='quit'):
-        echo 'Its Quit';
-        break;
-    default: echo 'nothing';
+
+
+    }
+
 
 }
+
+function displayFields($fields,$object){
+    echo '----------------------------------------------------------------'."\n"."\n";
+    echo 'Search '.$object.' with following fields'."\n"."\n";
+    foreach($fields as $field){
+        echo $field."\n";
+    }
+    echo '----------------------------------------------------------------'."\n"."\n";
+}
+
+function commandLineInputHnadler(){
+    $handle = fopen ("php://stdin","r");
+    $line = fgets($handle);
+    $line=str_replace(PHP_EOL, '', $line);
+    return $line;
+}
+
+echo 'Welcome to Zendesk Search'."\n".'Type \'quit\' to exit at any time, press \'Enter\' to continue'."\n\n\n\n";
+
+echo "\t".' Select search options:'."\n\t".'  * Press 1 to search Zendesk'."\n\t".'  * Press 2 to view list of searchable fields'."\n\t".'  * Type \'Quit\' to exit'."\n\n";
+
+
+menuInput(commandLineInputHnadler());

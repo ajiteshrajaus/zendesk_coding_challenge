@@ -35,6 +35,34 @@ function search($searchItemInput,$searchValue,$objectToSearch){
     return $result;
 }
 
+function startSearch($objectToSearch){
+    echo 'Enter the search item'."\n";
+    $searchItemInputInput = commandLineInputHnadler();
+    checkSearchableItems('users');
+    if(in_array($searchItemInputInput,checkSearchableItems($objectToSearch))){
+        echo 'Enter the search value'."\n";
+        $searchValue = commandLineInputHnadler();
+        $result=search($searchItemInputInput,$searchValue,$objectToSearch);
+        if(count($result)>0){
+            echo 'Found '.count($result). 'records matching the search criteria'."\n";
+            print_r($result);echo "\n";
+            echo 'Press return to get back to the previous menu'."\n".'Press \'b\' to get back to main menu'."\n".'Type \'Quit\' to exit'."\n";
+            menuInput(commandLineInputHnadler());
+        }
+        else{
+            echo 'No records were found matching the search criteria'."\n";
+            echo 'Press return to get back to the previous menu'."\n".'Press \'b\' to get back to main menu'."\n".'Type \'Quit\' to exit'."\n";
+            menuInput(commandLineInputHnadler());
+        }
+    }
+    else{
+        echo 'Search item not present'."\n";
+        echo 'Press return to get back to the previous menu'."\n".'Press \'b\' to get back to main menu'."\n".'Type \'Quit\' to exit'."\n";
+        menuInput(commandLineInputHnadler());
+    }
+
+}
+
 function menuInput($input){
 
     switch($input){
@@ -44,90 +72,21 @@ function menuInput($input){
             $userInput = commandLineInputHnadler();
         switch($userInput){
             case 1:
-                echo 'Enter the search item'."\n";
-                $searchItemInputInput = commandLineInputHnadler();
-                checkSearchableItems('users');
-                if(in_array($searchItemInputInput,checkSearchableItems('users'))){
-                    echo 'Enter the search value'."\n";
-                    $searchValue = commandLineInputHnadler();
-                    $result=search($searchItemInputInput,$searchValue,'users');
-                    if(count($result)>0){
-                        echo 'Found '.count($result). 'records matching the search criteria'."\n";
-                        print_r($result);echo "\n";
-                        echo 'Press return to get back to the previous menu'."\n".'Press \'b\' to get back to main menu'."\n".'Type \'Quit\' to exit'."\n";
-                        menuInput(commandLineInputHnadler());
-                    }
-                    else{
-                        echo 'No records were found matching the search criteria'."\n";
-                        echo 'Press return to get back to the previous menu'."\n".'Press \'b\' to get back to main menu'."\n".'Type \'Quit\' to exit'."\n";
-                        menuInput(commandLineInputHnadler());
-                    }
-                }
-                else{
-                    echo 'Search item not present'."\n";
-                    echo 'Press return to get back to the previous menu'."\n".'Press \'b\' to get back to main menu'."\n".'Type \'Quit\' to exit'."\n";
-                    menuInput(commandLineInputHnadler());
-                }
+                startSearch('users');
                 break;
             case 2:
-                echo 'Enter the search item'."\n";
-                $searchItemInputInput = commandLineInputHnadler();
-                if(in_array($searchItemInputInput,checkSearchableItems('tickets'))){
-                    echo 'Enter the search value'."\n";
-                    $searchValue = commandLineInputHnadler();
-                    $result=search($searchItemInputInput,$searchValue,'tickets');
-                    if(count($result)>0){
-                        echo 'Found '.count($result). 'records matching the search criteria'."\n";
-                        print_r($result);echo "\n";
-                        echo 'Press return to get back to the previous menu'."\n".'Press \'b\' to get back to main menu'."\n".'Type \'Quit\' to exit'."\n";
-                        menuInput(commandLineInputHnadler());
-                    }
-                    else{
-                        echo 'No records were found matching the search criteria'."\n";
-                        echo 'Press return to get back to the previous menu'."\n".'Press \'b\' to get back to main menu'."\n".'Type \'Quit\' to exit'."\n";
-                        menuInput(commandLineInputHnadler());
-                    }
-                }
-                else{
-                    echo 'Search item not present'."\n";
-                    echo 'Press return to get back to the previous menu'."\n".'Press \'b\' to get back to main menu'."\n".'Type \'Quit\' to exit'."\n";
-                    menuInput(commandLineInputHnadler());
-                }
+                startSearch('users');
                 break;
             case 3:
-                echo 'Enter the search item'."\n";
-                $searchItemInputInput = commandLineInputHnadler();
-                if(in_array($searchItemInputInput,checkSearchableItems('organizations'))){
-                    echo 'Enter the search value'."\n";
-                    $searchValue = commandLineInputHnadler();
-                    $result=search($searchItemInputInput,$searchValue,'organizations');
-                    if(count($result)>0){
-                        echo 'Found '.count($result). 'records matching the search criteria'."\n";
-                        print_r($result);echo "\n";
-                        echo 'Press return to get back to the previous menu'."\n".'Press \'b\' to get back to main menu'."\n".'Type \'Quit\' to exit'."\n";
-                        menuInput(commandLineInputHnadler());
-                    }
-                    else{
-                        echo 'No records were found matching the search criteria'."\n";
-                        echo 'Press return to get back to the previous menu'."\n".'Press \'b\' to get back to main menu'."\n".'Type \'Quit\' to exit'."\n";
-                        menuInput(commandLineInputHnadler());
-                    }
-                }
-                else{
-                    echo 'Search item not present'."\n";
-                    echo 'Press return to get back to the previous menu'."\n".'Press \'b\' to get back to main menu'."\n".'Type \'Quit\' to exit'."\n";
-                    menuInput(commandLineInputHnadler());
-                }
+                startSearch('users');
                 break;
-
             default: echo 'Incorrect input! Try again'."\n";
                     menuInput('');
                     break;
         }
             break;
         case 'b':
-            echo 'Welcome to Zendesk Search'."\n".'Type \'quit\' to exit at any time, press \'Enter\' to continue'."\n\n\n\n";
-            echo "\t".' Select search options:'."\n\t".'  * Press 1 to search Zendesk'."\n\t".'  * Press 2 to view list of searchable fields'."\n\t".'  * Type \'Quit\' to exit'."\n\n";
+            startApplication();
             menuInput(commandLineInputHnadler());
             break;
         case 2:
@@ -147,8 +106,6 @@ function menuInput($input){
 
 
     }
-
-
 }
 
 function displayFields($fields,$object){
@@ -167,9 +124,11 @@ function commandLineInputHnadler(){
     return $line;
 }
 
-echo 'Welcome to Zendesk Search'."\n".'Type \'quit\' to exit at any time, press \'Enter\' to continue'."\n\n\n\n";
+function startApplication(){
+    echo 'Welcome to Zendesk Search'."\n".'Type \'quit\' to exit at any time, press \'Enter\' to continue'."\n\n\n\n";
 
-echo "\t".' Select search options:'."\n\t".'  * Press 1 to search Zendesk'."\n\t".'  * Press 2 to view list of searchable fields'."\n\t".'  * Type \'Quit\' to exit'."\n\n";
+    echo "\t".' Select search options:'."\n\t".'  * Press 1 to search Zendesk'."\n\t".'  * Press 2 to view list of searchable fields'."\n\t".'  * Type \'Quit\' to exit'."\n\n";
+}
 
-
-menuInput(commandLineInputHnadler());
+    startApplication();
+    menuInput(commandLineInputHnadler());

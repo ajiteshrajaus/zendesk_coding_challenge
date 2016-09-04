@@ -68,17 +68,19 @@ function menuInput($input){
     switch($input){
         case 1:
         case '':
-            echo 'Select 1) Users 2) Tickets or 3) Organizations'."\n";
+            echo 'Select 1) Users 2) Tickets or 3) Organizations 4)Exit out quickly'."\n";
             $userInput = commandLineInputHnadler();
         switch($userInput){
             case 1:
                 startSearch('users');
                 break;
             case 2:
-                startSearch('users');
+                startSearch('tickets');
                 break;
             case 3:
-                startSearch('users');
+                startSearch('organizations');
+                break;
+            case 4:
                 break;
             default: echo 'Incorrect input! Try again'."\n";
                     menuInput('');
@@ -126,7 +128,6 @@ function commandLineInputHnadler(){
 
 function startApplication(){
     echo 'Welcome to Zendesk Search'."\n".'Type \'quit\' to exit at any time, press \'Enter\' to continue'."\n\n\n\n";
-
     echo "\t".' Select search options:'."\n\t".'  * Press 1 to search Zendesk'."\n\t".'  * Press 2 to view list of searchable fields'."\n\t".'  * Type \'Quit\' to exit'."\n\n";
 }
 

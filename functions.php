@@ -6,12 +6,27 @@
  * Time: 9:32 PM
  */
 
+/**
+ * Return all the searchable fields
+ *
+ * @param String $file Name of file
+ * @return array $searchableKeys All the fields
+ */
 function checkSearchableItems($file){
     $str = file_get_contents($file.'.json');
     $json = json_decode($str, true);
     $searchableKeys = array_keys($json[0]);
     return $searchableKeys;
 }
+
+/**
+ * Search for a given value in the file
+ *
+ * @param String $searchItemInput Intented field to search
+ * @param String $searchValue     Value to search
+ * @param String $objectToSearch  File to be searched
+ * @return array                  Result of the search
+ */
 
 function search($searchItemInput,$searchValue,$objectToSearch){
     $str = file_get_contents($objectToSearch.'.json');
@@ -33,6 +48,12 @@ function search($searchItemInput,$searchValue,$objectToSearch){
     }
     return $result;
 }
+
+/**
+ * Function for starting the search process
+ *
+ * @param $objectToSearch String Name of file to searched
+ */
 
 function startSearch($objectToSearch){
     echo 'Enter the search item'."\n";
@@ -61,6 +82,12 @@ function startSearch($objectToSearch){
     }
 
 }
+
+/**
+ * Function for processing the users input in the menu
+ *
+ * @param String $input Users input
+ */
 
 function menuInput($input){
 
@@ -109,6 +136,12 @@ function menuInput($input){
     }
 }
 
+/**
+ * Function for displaying the fields available for searching an object
+ *
+ * @param array $fields Array of available fields
+ * @param String $object Name of the object
+ */
 function displayFields($fields,$object){
     echo '----------------------------------------------------------------'."\n"."\n";
     echo 'Search '.$object.' with following fields'."\n"."\n";
@@ -118,6 +151,10 @@ function displayFields($fields,$object){
     echo '----------------------------------------------------------------'."\n"."\n";
 }
 
+/**
+ * Function for taking users input from command line
+ * @return mixed|string Users input
+ */
 function commandLineInputHnadler(){
     $handle = fopen ("php://stdin","r");
     $line = fgets($handle);
@@ -125,11 +162,18 @@ function commandLineInputHnadler(){
     return $line;
 }
 
+/**
+ * Welcome screen of the application
+ */
 function startApplication(){
     echo 'Welcome to Zendesk Search'."\n".'Type \'quit\' to exit at any time, press \'Enter\' to continue'."\n\n\n\n";
     echo "\t".' Select search options:'."\n\t".'  * Press 1 to search Zendesk'."\n\t".'  * Press 2 to view list of searchable fields'."\n\t".'  * Type \'Quit\' to exit'."\n\n";
 }
 
+/**
+ * Function for displaying the records returned from search
+ * @param array $records Array of records
+ */
 function displayResult($records){
     foreach($records as $record){
         echo "\n".'-----------------------------------------------------------------------------------------------------------------'."\n";

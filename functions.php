@@ -64,18 +64,21 @@ function startSearch($objectToSearch){
         $searchValue = commandLineInputHnadler();
         $result=search($searchItemInputInput,$searchValue,$objectToSearch);
         if(count($result)>0){
+            clearScreen();
             echo 'Found '.count($result). ' records matching the search criteria'."\n";
             displayResult($result);
             echo 'Press return to get back to the previous menu'."\n".'Press \'b\' to get back to main menu'."\n".'Type \'Quit\' to exit'."\n";
             menuInput(commandLineInputHnadler());
         }
         else{
+            clearScreen();
             echo 'No records were found matching the search criteria'."\n";
             echo 'Press return to get back to the previous menu'."\n".'Press \'b\' to get back to main menu'."\n".'Type \'Quit\' to exit'."\n";
             menuInput(commandLineInputHnadler());
         }
     }
     else{
+        clearScreen();
         echo 'Search item not present'."\n";
         echo 'Press return to get back to the previous menu'."\n".'Press \'b\' to get back to main menu'."\n".'Type \'Quit\' to exit'."\n";
         menuInput(commandLineInputHnadler());
@@ -94,6 +97,7 @@ function menuInput($input){
     switch($input){
         case 1:
         case '':
+            clearScreen();
             echo 'Select 1) Users 2) Tickets or 3) Organizations 4)Exit out quickly'."\n";
             $userInput = commandLineInputHnadler();
             switch($userInput){
@@ -114,6 +118,7 @@ function menuInput($input){
             }
             break;
         case 'b':
+            clearScreen();
             startApplication();
             menuInput(commandLineInputHnadler());
             break;
@@ -188,5 +193,13 @@ function displayResult($records){
                 }
         }
         echo "\n".'-----------------------------------------------------------------------------------------------------------------------'."\n";
+    }
+}
+
+function clearScreen(){
+    if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+        system('cls');
+    } else {
+        system('clear');
     }
 }
